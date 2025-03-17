@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexnova Image Template Editor</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #23358d;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 540px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+
+        .canvas-container {
+            width: 100%;
+            padding-bottom: 138.15%;
+            /* (746/540 * 100) to maintain aspect ratio */
+            position: relative;
+            margin: 20px 0;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #ccc;
+            background-color: white;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input,
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .pricing {
+            margin-top: 40px;
+        }
+
+        .pricing-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .pricing-plan {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Upload Your Image & Enter Your Name</h2>
+        <div class="controls">
+            <input type="file" id="imageUpload" accept="image/*">
+            <input type="text" id="nameInput" placeholder="Enter your name">
+            <button onclick="generateImage()">Generate Image</button>
+            <button onclick="downloadImage()">Download</button>
+        </div>
+        <div class="canvas-container">
+            <canvas id="canvas"></canvas>
+        </div>
+    </div>
+
+    <div class="pricing">
+        <h2>Pricing for Templates</h2>
+        <div class="pricing-table">
+            <div class="pricing-plan">
+                <h3>Basic</h3>
+                <p class="price">₹499</p>
+                <p>Single Template</p>
+                <p>HD Quality</p>
+                <button onclick="redirectToWhatsApp('Basic')">Choose Plan</button>
+            </div>
+            <div class="pricing-plan">
+                <h3>Premium</h3>
+                <p class="price">₹999</p>
+                <p>3 Templates</p>
+                <p>Custom Design</p>
+                <button onclick="redirectToWhatsApp('Premium')">Choose Plan</button>
+            </div>
+            <div class="pricing-plan">
+                <h3>Business</h3>
+                <p class="price">₹1999</p>
+                <p>Unlimited Templates</p>
+                <p>Branding Support</p>
+                <button onclick="redirectToWhatsApp('Business')">Choose Plan</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        // Set canvas size with original aspect ratio
+        function setCanvasSize() {
+            const containerWidth = canvas.parentElement.clientWidth;
+            canvas.width = containerWidth;
+            canvas.height = (containerWidth * 746) / 540; // Maintain original aspect ratio
+            return {
+                width: containerWidth,
+                height: canvas.height
+            };
+        }
+
+        // Initial canvas size
+        let canvasSize = setCanvasSize();
+
+        // Update canvas size on window resize
+        window.addEventListener('resize', () => {
+            canvasSize = setCanvasSize();
+            generateImage();
+        });
+
+        const template = new Image();
+        template.src = "img/templates_image/My_Majlis.svg";
+
+        template.onload = function () {
+            generateImage();
+        };
+
+        function generateImage() {
+            const dimensions = setCanvasSize();
+            ctx.clearRect(0, 0, dimensions.width, dimensions.height);
+
+            // Draw template maintaining aspect ratio
+            ctx.drawImage(template, 0, 0, dimensions.width, dimensions.height);
+
+            const file = document.getElementById("imageUpload").files[0];
+            const name = document.getElementById("nameInput").value;
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const uploadedImage = new Image();
+                    uploadedImage.src = event.target.result;
+
+                    uploadedImage.onload = function () {
+                        // Position circle proportionally based on original template dimensions
+                        const circleX = dimensions.width * 0.297;
+                        const circleY = dimensions.height * 0.369;
+                        const radius = dimensions.width * 0.23;
+
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.arc(circleX, circleY, radius, 0, Math.PI * 2);
+                        ctx.closePath();
+                        ctx.clip();
+
+                        // Draw uploaded image maintaining aspect ratio within circle
+                        const size = radius * 2;
+                        ctx.drawImage(uploadedImage, circleX - radius, circleY - radius, size, size);
+                        ctx.restore();
+                    };
+                };
+                reader.readAsDataURL(file);
+            }
+
+            if (name) {
+                // Scale font size based on original template dimensions
+                const fontSize = 12;
+                ctx.font = `bold ${fontSize}px Georgia`;
+                ctx.fillStyle = "black";
+                ctx.textAlign = "center";
+                ctx.fillText(name.toUpperCase(), dimensions.width * 0.28, dimensions.height * 0.625);
+            }
+        }
+
+        function downloadImage() {
+            const link = document.createElement("a");
+            link.download = "customized_template.jpg";
+            link.href = canvas.toDataURL("image/jpg");
+            link.click();
+        }
+
+        function redirectToWhatsApp(plan) {
+            const phoneNumber = "917306121517";
+            const message = `Can I know more about the "${plan}" template plan?`;
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(url, "_blank");
+        }
+    </script>
+</body>
+
+</html>
