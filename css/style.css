@@ -852,24 +852,45 @@ h6 {
   margin-right: 0;
 }
 
-/* Contact Us Button - Adjusted for Better Fit */
+/* Ensure "Contact Us" button stays inline */
+.contact-menu-item {
+  display: flex;
+  align-items: center;
+  margin-right: 0;
+}
+
+/* Contact Us Button - Enhanced */
 .contact-btn {
-  padding: 8px 15px; /* Reduced padding */
-  background: #9C27B0;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #9C27B0, #7B1FA2);
   color: #fff !important;
-  border-radius: 5px;
+  border-radius: 25px;
   font-weight: 700;
   text-decoration: none;
   transition: all 0.3s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 36px; /* Slightly reduced height */
+  height: 40px;
+  box-shadow: 0 4px 10px rgba(156, 39, 176, 0.3);
+  border: none;
+  cursor: pointer;
 }
 
-.contact-btn:hover {
-  background: #7b1fa2;
+/* Hover & Focus Effects */
+.contact-btn:hover,
+.contact-btn:focus {
+  background: linear-gradient(135deg, #7B1FA2, #6A1B9A);
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(123, 31, 162, 0.4);
 }
+
+/* Optional: Add an icon inside the button */
+.contact-btn i {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
 
 /* Ensure uniform alignment */
 .nav-menu > li:last-child {
@@ -2075,6 +2096,10 @@ p {
   }
 }
 
+/*--------------------------------------------------------------
+# Contact Info - Enhanced Visibility & Interaction
+--------------------------------------------------------------*/
+
 .contact-info {
   display: flex;
   justify-content: space-between;
@@ -2088,10 +2113,12 @@ p {
   min-width: 200px;
   max-width: 250px;
   padding: 20px;
-  background: #f8f9fa;
+  background: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   text-align: center;
+  transition: all 0.3s ease-in-out;
+  border: 2px solid #007bff;
 }
 
 .contact-card i {
@@ -2101,21 +2128,38 @@ p {
 }
 
 .contact-card h3 {
-  font-size: 1.2rem;
-  margin-bottom: 5px;
-  color: #333;
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+  color: #222;
+  font-weight: 600;
 }
 
-.contact-card p {
+.contact-card p, .contact-card a {
   font-size: 1rem;
-  color: #555;
+  color: #444;
+  text-decoration: none;
 }
 
+.contact-card:hover {
+  background: #007bff;
+  color: #fff;
+  transform: translateY(-5px);
+  border-color: #0056b3;
+}
+
+.contact-card:hover i,
+.contact-card:hover h3,
+.contact-card:hover p,
+.contact-card:hover a {
+  color: #fff;
+}
+
+/* Contact Form Enhancements */
 .contact-form-container {
   background: #ffffff;
   padding: 30px;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
 }
 
@@ -2124,6 +2168,13 @@ p {
   padding: 12px;
   font-size: 1rem;
   margin-bottom: 15px;
+  border: 1px solid #ddd;
+  transition: 0.3s;
+}
+
+.contact-form .form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
 }
 
 .contact-form .btn {
@@ -2131,6 +2182,13 @@ p {
   padding: 12px;
   font-size: 1rem;
   border-radius: 5px;
+  background: #007bff;
+  color: #fff;
+  transition: 0.3s;
+}
+
+.contact-form .btn:hover {
+  background: #0056b3;
 }
 
 .map iframe {
