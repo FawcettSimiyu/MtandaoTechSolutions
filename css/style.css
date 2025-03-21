@@ -109,25 +109,51 @@ h6 {
 }
 
 /* Logo */
+/* Logo */
 .logo {
   display: flex;
   align-items: center;
   text-decoration: none;
   padding: 5px 0;
+  transition: transform 0.3s ease-in-out;
 }
 
+/* Logo Image */
 .logo-img {
   height: 45px;
   width: auto;
+  transition: transform 0.3s ease-in-out;
 }
 
+/* Rotate Logo on Hover */
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.logo:hover .logo-img {
+  transform: rotate(360deg);
+}
+
+
+.logo-img.spin-animation {
+  animation: spin 5s linear infinite;
+}
+
+/* Logo Text */
 .logo span {
   color: #3b82f6;
   margin-left: 8px;
   font-size: 22px;
   font-weight: bold;
   letter-spacing: 1px;
+  transition: color 0.3s ease-in-out;
 }
+
+/* Change Color on Hover */
+.logo:hover span {
+  color: #2563eb;
+}
+
 
 /* Navigation Menu */
 .nav-menu {
@@ -314,7 +340,7 @@ h6 {
   z-index: 10;
   color: white;
   max-width: 800px;
-  padding: 0 20px;
+  padding: 0 0px;
 }
 
 .intro-content h2 {
